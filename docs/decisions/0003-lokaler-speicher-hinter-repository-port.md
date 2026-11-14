@@ -12,9 +12,12 @@ nicht getroffen. Die erste Version sollte trotzdem sofort live gehen.
 
 ## Entscheid
 
-- Die UI spricht nur mit dem Interface `WinRepository` (Port).
-- Erster Adapter: `AsyncStorageWinRepository` – speichert auf dem Gerät
+- Die App spricht nur mit dem Interface `Collection<T>` (Port: `list`, `upsert`, `remove`, `clear`),
+  je eine Sammlung für Wins, Journal, Gewohnheiten, Habit-Haken und Gesundheitstage.
+- Erster Adapter: `AsyncStorageCollection` – speichert auf dem Gerät
   (im Web: localStorage). Es verlassen keine Daten das Gerät.
+- Der `AppDataProvider` hält alle Daten im Speicher und schreibt jede Änderung über die Repositories.
+- Export (JSON) und „alle Daten löschen" sind bereits lokal umgesetzt.
 - Ein Vertragstest stellt sicher, dass sich alle Adapter gleich verhalten.
 
 ## Begründung

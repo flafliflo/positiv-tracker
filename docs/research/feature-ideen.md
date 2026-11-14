@@ -25,22 +25,22 @@ Quellen: [Day-One-Forum: Feedback zur Zukunft](https://forums.dayoneapp.com/foru
 ## MVP (zwingend für Version 1)
 
 - [x] Win erfassen und anzeigen (Text, Kategorie, Datum) – in DE/IT/EN
-- [ ] Win bearbeiten und löschen
-- [ ] Gedanken: freier Journal-Eintrag mit Stimmung 1–5
-- [ ] Gewohnheiten: eigene Habits anlegen und täglich abhaken
-- [ ] Gesundheit manuell erfassen: Schritte, Schlaf, Wasser, Training
-- [ ] Heute-Ansicht: alles für den aktuellen Tag auf einem Bildschirm, Eintrag in unter 10 Sekunden
-- [ ] Streaks und Kalender-Heatmap
-- [ ] Wochen- und Monatsrückblick mit einfachen Statistiken
+- [x] Win bearbeiten und löschen
+- [x] Gedanken: freier Journal-Eintrag mit Stimmung 1–5
+- [x] Gewohnheiten: eigene Habits anlegen und täglich abhaken
+- [x] Gesundheit manuell erfassen: Schritte, Schlaf, Wasser, Training
+- [x] Heute-Ansicht: alles für den aktuellen Tag auf einem Bildschirm, Eintrag in unter 10 Sekunden
+- [x] Streaks und Kalender-Heatmap
+- [x] Wochen- und Monatsrückblick mit einfachen Statistiken
 - [ ] Konto mit sicherem Login und Sync (Datentrennung pro Nutzer)
-- [ ] Export aller Daten (JSON/CSV) und Konto-Löschung
-- [ ] Einstellungen: Sprache, Dark Mode
+- [x] Export aller Daten (JSON) und Löschen aller Daten (lokal; Konto-Löschung folgt mit dem Login)
+- [x] Einstellungen: Sprache, Dark Mode
 
 ## Später (nice to have)
 
 - Schritte automatisch aus HealthKit (iOS) und Health Connect (Android)
 - Tägliche Erinnerung zur Wunschzeit (dezent, leicht abschaltbar)
-- Dankbarkeits- und Reflexions-Prompts
+- [x] Dankbarkeits- und Reflexions-Prompts (Impuls des Tages)
 - Fotos und Sprachnotizen an Einträgen
 - Suche, Tags, Filter nach Kategorie
 - Home-Screen-Widgets (Streak, Schnell-Eintrag)
