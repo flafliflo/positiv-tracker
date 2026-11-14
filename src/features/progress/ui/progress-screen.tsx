@@ -9,7 +9,7 @@ import { formatDay, formatDecimal, formatNumber, formatPercent } from '@/i18n/fo
 import { useLanguage } from '@/i18n/use-language';
 import { lastDays } from '@/shared/day';
 import { LoadError } from '@/ui/entry-actions';
-import { Card, Chip, Screen, SectionTitle, StatTile } from '@/ui/kit';
+import { Card, Group, Screen, Section, Segment, Segmented, ValueRow } from '@/ui/kit';
 import type { PaletteColor } from '@/ui/palette';
 
 import {
@@ -42,151 +42,160 @@ export function ProgressScreen() {
   const summary = summarizePeriod(data, days);
   const insight = moodStepsInsight(data, { threshold: STEPS_THRESHOLD, minDays: 3 });
   const none = t('common.noValue');
+  const sleepUnit = t('health.units.sleepHours');
+  const trainingUnit = t('health.units.trainingMinutes');
 
   return (
     <Screen title={t('progress.title')} subtitle={t('progress.subtitle')}>
       <LoadError />
 
-      <XStack gap="3" flexWrap="wrap">
-        <StreakCard testID="streak-current" emoji="🔥" label={t('progress.streak.current')} days={currentStreak(activeDays, today)} highlight />
-        <StreakCard testID="streak-best" emoji="🏅" label={t('progress.streak.best')} days={bestStreak(activeDays)} />
-      </XStack>
+      <Group>
+        <ValueRow
+          testID="streak-current"
+          icon="fire"
+          color="catWins"
+          label={t('progress.streak.current')}
+          value={t('progress.streak.days', { count: currentStreak(activeDays, today) })}
+        />
+        <ValueRow
+          testID="streak-best"
+          icon="medal-outline"
+          color="catHabits"
+          label={t('progress.streak.best')}
+          value={t('progress.streak.days', { count: bestStreak(activeDays) })}
+        />
+      </Group>
 
-      <Card>
-        <SectionTitle>{t('progress.heatmap.title')}</SectionTitle>
-        <XStack gap="1" justify="center">
-          {heatmapWeeks(activity, today, HEATMAP_WEEKS).map((week) => (
-            <YStack key={week[0].day} gap="1" flex={1} maxW={28}>
-              {week.map((cell) =>
-                cell.isFuture ? (
-                  <YStack key={cell.day} aspectRatio={1} />
-                ) : (
-                  <YStack
-                    key={cell.day}
-                    role="img"
-                    aria-label={t('progress.heatmap.cell', { date: formatDay(cell.day, language), count: cell.count })}
-                    aspectRatio={1}
-                    rounded="sm"
-                    bg={HEAT_COLOR[cell.level]}
-                    borderWidth={cell.day === today ? 2 : 0}
-                    borderColor="ink"
-                  />
-                ),
-              )}
-            </YStack>
-          ))}
-        </XStack>
-        <XStack gap="1.5" items="center" justify="flex-end">
-          <Text fontSize="xs" color="muted">
-            {t('progress.heatmap.less')}
-          </Text>
-          {([0, 1, 2, 3, 4] as const).map((level) => (
-            <YStack key={level} w={14} h={14} rounded="sm" bg={HEAT_COLOR[level]} />
-          ))}
-          <Text fontSize="xs" color="muted">
-            {t('progress.heatmap.more')}
-          </Text>
-        </XStack>
-      </Card>
-
-      <YStack gap="3">
-        <XStack justify="space-between" items="center" gap="3" flexWrap="wrap">
-          <SectionTitle>{t('progress.summary.title')}</SectionTitle>
-          <XStack role="radiogroup" aria-label={t('progress.period.label')} gap="2">
-            {(Object.keys(PERIODS) as Period[]).map((option) => (
-              <Chip key={option} selected={option === period} onPress={() => setPeriod(option)}>
-                {t(`progress.period.${option}`)}
-              </Chip>
+      <Section title={t('progress.heatmap.title')}>
+        <Card>
+          <XStack gap={4} justify="center">
+            {heatmapWeeks(activity, today, HEATMAP_WEEKS).map((week) => (
+              <YStack key={week[0].day} gap={4} flex={1} maxW={26}>
+                {week.map((cell) =>
+                  cell.isFuture ? (
+                    <YStack key={cell.day} aspectRatio={1} />
+                  ) : (
+                    <YStack
+                      key={cell.day}
+                      role="img"
+                      aria-label={t('progress.heatmap.cell', { date: formatDay(cell.day, language), count: cell.count })}
+                      aspectRatio={1}
+                      rounded={4}
+                      bg={HEAT_COLOR[cell.level]}
+                      borderWidth={cell.day === today ? 2 : 0}
+                      borderColor="ink"
+                    />
+                  ),
+                )}
+              </YStack>
             ))}
           </XStack>
-        </XStack>
+          <XStack gap={6} items="center" justify="flex-end">
+            <Text fontSize={13} color="muted">
+              {t('progress.heatmap.less')}
+            </Text>
+            {([0, 1, 2, 3, 4] as const).map((level) => (
+              <YStack key={level} w={12} h={12} rounded={3} bg={HEAT_COLOR[level]} />
+            ))}
+            <Text fontSize={13} color="muted">
+              {t('progress.heatmap.more')}
+            </Text>
+          </XStack>
+        </Card>
+      </Section>
 
-        <XStack gap="3" flexWrap="wrap">
-          <StatTile testID="summary-wins" emoji="🏆" label={t('progress.summary.wins')} value={formatNumber(summary.wins, language)} />
-          <StatTile testID="summary-journal" emoji="💭" label={t('progress.summary.journal')} value={formatNumber(summary.journalEntries, language)} />
-          <StatTile
+      <Section
+        title={t('progress.summary.title')}
+        action={
+          <YStack minW={170}>
+            <Segmented label={t('progress.period.label')}>
+              {(Object.keys(PERIODS) as Period[]).map((option) => (
+                <Segment key={option} selected={option === period} onPress={() => setPeriod(option)}>
+                  {t(`progress.period.${option}`)}
+                </Segment>
+              ))}
+            </Segmented>
+          </YStack>
+        }
+      >
+        <Group>
+          <ValueRow testID="summary-wins" icon="trophy-outline" color="catWins" label={t('progress.summary.wins')} value={formatNumber(summary.wins, language)} />
+          <ValueRow
+            testID="summary-journal"
+            icon="thought-bubble-outline"
+            color="catMood"
+            label={t('progress.summary.journal')}
+            value={formatNumber(summary.journalEntries, language)}
+          />
+          <ValueRow
             testID="summary-mood"
-            emoji="🙂"
+            icon="emoticon-happy-outline"
+            color="catMood"
             label={t('progress.summary.mood')}
             value={summary.averageMood === null ? none : formatDecimal(summary.averageMood, language, 1)}
           />
-          <StatTile
+          <ValueRow
             testID="summary-steps"
-            emoji="👟"
+            icon="shoe-print"
+            color="catSteps"
             label={t('progress.summary.steps')}
             value={summary.averageSteps === null ? none : formatNumber(Math.round(summary.averageSteps), language)}
           />
-          <StatTile
+          <ValueRow
             testID="summary-sleep"
-            emoji="😴"
+            icon="sleep"
+            color="catSleep"
             label={t('progress.summary.sleep')}
-            value={summary.averageSleep === null ? none : `${formatDecimal(summary.averageSleep, language, 1)} ${t('health.units.sleepHours')}`}
+            value={summary.averageSleep === null ? none : `${formatDecimal(summary.averageSleep, language, 1)} ${sleepUnit}`}
           />
-          <StatTile
+          <ValueRow
             testID="summary-water"
-            emoji="💧"
+            icon="cup-water"
+            color="catWater"
             label={t('progress.summary.water')}
             value={summary.averageWater === null ? none : formatDecimal(summary.averageWater, language, 1)}
           />
-          <StatTile
+          <ValueRow
             testID="summary-training"
-            emoji="🏋️"
+            icon="dumbbell"
+            color="catTraining"
             label={t('progress.summary.training')}
-            value={`${formatNumber(summary.trainingMinutes, language)} ${t('health.units.trainingMinutes')}`}
+            value={`${formatNumber(summary.trainingMinutes, language)} ${trainingUnit}`}
           />
-          <StatTile
+          <ValueRow
             testID="summary-habits"
-            emoji="✅"
+            icon="check-bold"
+            color="catHabits"
             label={t('progress.summary.habits')}
             value={summary.habitCompletion === null ? none : formatPercent(summary.habitCompletion, language)}
           />
-          <StatTile testID="summary-active" emoji="📅" label={t('progress.summary.activeDays')} value={`${summary.activeDays}/${days.length}`} />
-        </XStack>
-      </YStack>
+          <ValueRow
+            testID="summary-active"
+            icon="calendar-check-outline"
+            color="catNeutral"
+            label={t('progress.summary.activeDays')}
+            value={`${summary.activeDays}/${days.length}`}
+          />
+        </Group>
+      </Section>
 
-      <MoodTrend days={days} />
+      <Section title={t('progress.moodTrend.title')}>
+        <MoodTrend days={days} />
+      </Section>
 
-      <Card bg="brandSoft" borderColor="brandSoft">
-        <XStack gap="3" items="flex-start">
-          <Text fontSize="2xl" aria-hidden>
-            💡
+      <Section title={t('progress.insight.title')}>
+        <Card>
+          <Text fontSize={17} color="ink">
+            {insight === null
+              ? t('progress.insight.notEnough')
+              : t(`progress.insight.${insight.percentDifference > 0 ? 'better' : insight.percentDifference < 0 ? 'worse' : 'same'}`, {
+                  steps: formatNumber(insight.threshold, language),
+                  percent: Math.abs(insight.percentDifference),
+                })}
           </Text>
-          <YStack flex={1} gap="1">
-            <Text fontSize="sm" fontWeight="700" color="brandInk">
-              {t('progress.insight.title')}
-            </Text>
-            <Text fontSize="base" color="brandInk">
-              {insight === null
-                ? t('progress.insight.notEnough')
-                : t(`progress.insight.${insight.percentDifference > 0 ? 'better' : insight.percentDifference < 0 ? 'worse' : 'same'}`, {
-                    steps: formatNumber(insight.threshold, language),
-                    percent: Math.abs(insight.percentDifference),
-                  })}
-            </Text>
-          </YStack>
-        </XStack>
-      </Card>
+        </Card>
+      </Section>
     </Screen>
-  );
-}
-
-type StreakCardProps = { testID: string; emoji: string; label: string; days: number; highlight?: boolean };
-
-function StreakCard({ testID, emoji, label, days, highlight = false }: StreakCardProps) {
-  const { t } = useTranslation();
-
-  return (
-    <Card testID={testID} grow={1} shrink={1} flexBasis={160} p="4" gap="1" bg={highlight ? 'accentSoft' : 'card'} borderColor={highlight ? 'accentSoft' : 'line'}>
-      <Text fontSize="3xl" aria-hidden>
-        {emoji}
-      </Text>
-      <Text fontSize="2xl" fontWeight="800" color={highlight ? 'accentInk' : 'ink'}>
-        {t('progress.streak.days', { count: days })}
-      </Text>
-      <Text fontSize="sm" color={highlight ? 'accentInk' : 'muted'}>
-        {label}
-      </Text>
-    </Card>
   );
 }
 
@@ -200,13 +209,12 @@ function MoodTrend({ days }: { days: readonly string[] }) {
 
   return (
     <Card>
-      <SectionTitle>{t('progress.moodTrend.title')}</SectionTitle>
       {hasMood ? (
-        <XStack h={120} gap="1" items="flex-end">
+        <XStack h={120} gap={days.length > 10 ? 2 : 6} items="flex-end">
           {days.map((day) => {
             const mood = moods.get(day);
             if (mood === undefined) {
-              return <YStack key={day} flex={1} h={4} rounded="full" bg="cardAlt" />;
+              return <YStack key={day} flex={1} h={3} rounded={2} bg="cardAlt" />;
             }
             return (
               <YStack
@@ -215,16 +223,16 @@ function MoodTrend({ days }: { days: readonly string[] }) {
                 aria-label={t('progress.moodTrend.bar', { date: formatDay(day, language), mood: formatDecimal(mood, language, 1) })}
                 flex={1}
                 h={`${(mood / 5) * 100}%`}
-                rounded="md"
+                rounded={4}
                 bg={MOOD_COLOR[Math.round(mood) as Mood]}
-                borderWidth={1}
-                borderColor="line"
               />
             );
           })}
         </XStack>
       ) : (
-        <Text color="muted">{t('progress.moodTrend.empty')}</Text>
+        <Text fontSize={15} color="muted">
+          {t('progress.moodTrend.empty')}
+        </Text>
       )}
     </Card>
   );

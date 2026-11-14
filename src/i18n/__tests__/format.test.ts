@@ -1,4 +1,4 @@
-import { formatDay, formatDecimal, formatNumber, formatShortDay, formatWeekdayDate } from '../format';
+import { formatDay, formatDecimal, formatNumber, formatShortDay, formatWeekdayDate, formatWeekdayShort } from '../format';
 
 describe('formatDay', () => {
   it('formats a calendar day the German way', () => {
@@ -50,5 +50,14 @@ describe('formatDecimal', () => {
     expect(formatDecimal(3.456, 'en', 1)).toBe('3.5');
     expect(formatDecimal(7, 'en', 1)).toBe('7.0');
     expect(formatDecimal(7.5, 'de', 1)).toMatch(/^7[.,]5$/);
+  });
+});
+
+describe("formatWeekdayShort", () => {
+  it("abbreviates the weekday without a trailing dot", () => {
+    expect(formatWeekdayShort("2026-11-15", "de")).toBe("So");
+    expect(formatWeekdayShort("2026-11-16", "de")).toBe("Mo");
+    expect(formatWeekdayShort("2026-11-15", "it")).toBe("dom");
+    expect(formatWeekdayShort("2026-11-15", "en")).toBe("Sun");
   });
 });

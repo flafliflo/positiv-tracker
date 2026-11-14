@@ -23,19 +23,19 @@ function AppTabs() {
       <TabList asChild>
         <TabBar label={t('tabs.label')}>
           <TabTrigger name="today" href="/" asChild>
-            <TabButton icon="today-outline" label={t('tabs.today')} />
+            <TabButton icon="calendar-today" label={t('tabs.today')} />
           </TabTrigger>
           <TabTrigger name="wins" href="/wins" asChild>
             <TabButton icon="trophy-outline" label={t('tabs.wins')} />
           </TabTrigger>
           <TabTrigger name="journal" href="/journal" asChild>
-            <TabButton icon="chatbubble-ellipses-outline" label={t('tabs.journal')} />
+            <TabButton icon="thought-bubble-outline" label={t('tabs.journal')} />
           </TabTrigger>
           <TabTrigger name="health" href="/health" asChild>
-            <TabButton icon="heart-outline" label={t('tabs.health')} />
+            <TabButton icon="heart-pulse" label={t('tabs.health')} />
           </TabTrigger>
           <TabTrigger name="progress" href="/progress" asChild>
-            <TabButton icon="stats-chart-outline" label={t('tabs.progress')} />
+            <TabButton icon="chart-bar" label={t('tabs.progress')} />
           </TabTrigger>
           <TabTrigger name="settings" href="/settings" style={{ display: 'none' }} />
         </TabBar>

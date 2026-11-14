@@ -8,7 +8,22 @@ import { HabitChecklist } from '@/features/habits/ui/habit-checklist';
 import { formatDecimal, formatNumber } from '@/i18n/format';
 import { useLanguage } from '@/i18n/use-language';
 import { LoadError } from '@/ui/entry-actions';
-import { AppButton, Card, EmptyState, ErrorMessage, FieldLabel, IconButton, Screen, SectionTitle, TextField } from '@/ui/kit';
+import {
+  AppButton,
+  Card,
+  EmptyState,
+  ErrorMessage,
+  Footnote,
+  Group,
+  IconButton,
+  IconChip,
+  Row,
+  Screen,
+  Section,
+  TextField,
+  type IconName,
+} from '@/ui/kit';
+import type { PaletteColor } from '@/ui/palette';
 
 import { manualStepsSource, type StepsSource } from '../data/steps-source';
 import { adjustHealthMetric, emptyHealthDay, parseMetricInput, type HealthDay, type HealthMetric } from '../domain/health-day';
@@ -18,11 +33,13 @@ type Props = {
   stepsSource?: StepsSource;
 };
 
-const STEPPER_METRICS = [
-  { metric: 'sleepHours', emoji: '😴', digits: 1 },
-  { metric: 'waterGlasses', emoji: '💧', digits: 0 },
-  { metric: 'trainingMinutes', emoji: '🏋️', digits: 0 },
-] as const;
+type StepperMetric = Exclude<HealthMetric, 'steps'>;
+
+const STEPPER_METRICS: readonly { metric: StepperMetric; icon: IconName; color: PaletteColor; digits: number }[] = [
+  { metric: 'sleepHours', icon: 'sleep', color: 'catSleep', digits: 1 },
+  { metric: 'waterGlasses', icon: 'cup-water', color: 'catWater', digits: 0 },
+  { metric: 'trainingMinutes', icon: 'dumbbell', color: 'catTraining', digits: 0 },
+];
 
 export function HealthScreen({ stepsSource = manualStepsSource }: Props) {
   const { t } = useTranslation();
@@ -33,30 +50,31 @@ export function HealthScreen({ stepsSource = manualStepsSource }: Props) {
     <Screen title={t('health.title')} subtitle={t('health.subtitle')}>
       <LoadError />
 
-      <StepsCard healthToday={healthToday} manualEntry={stepsSource.requiresManualEntry} />
+      <YStack gap={8}>
+        <Group>
+          <StepsRow healthToday={healthToday} manualEntry={stepsSource.requiresManualEntry} />
+          {STEPPER_METRICS.map((config, index) => (
+            <StepperRow key={config.metric} testID={`metric-${index + 1}`} healthToday={healthToday} {...config} />
+          ))}
+        </Group>
+        {stepsSource.requiresManualEntry ? <Footnote>{t('health.stepsHint')}</Footnote> : null}
+      </YStack>
 
-      <XStack gap="3" flexWrap="wrap">
-        {STEPPER_METRICS.map(({ metric, emoji, digits }, index) => (
-          <StepperCard key={metric} testID={`metric-${index + 1}`} healthToday={healthToday} metric={metric} emoji={emoji} digits={digits} />
-        ))}
-      </XStack>
-
-      <YStack gap="3">
-        <SectionTitle>{t('habits.title')}</SectionTitle>
+      <Section title={t('habits.title')}>
         <Card>
           <AddHabitForm />
-          {status === 'ready' && data.habits.length === 0 ? (
-            <EmptyState emoji="🌱" title={t('habits.empty.title')} body={t('habits.empty.body')} />
-          ) : (
-            <HabitChecklist manage />
-          )}
         </Card>
-      </YStack>
+        {status === 'ready' && data.habits.length === 0 ? (
+          <EmptyState icon="sprout-outline" title={t('habits.empty.title')} body={t('habits.empty.body')} />
+        ) : (
+          <HabitChecklist manage />
+        )}
+      </Section>
     </Screen>
   );
 }
 
-function StepsCard({ healthToday, manualEntry }: { healthToday: HealthDay; manualEntry: boolean }) {
+function StepsRow({ healthToday, manualEntry }: { healthToday: HealthDay; manualEntry: boolean }) {
   const { t } = useTranslation();
   const language = useLanguage();
   const { today, actions } = useAppData();
@@ -79,23 +97,21 @@ function StepsCard({ healthToday, manualEntry }: { healthToday: HealthDay; manua
   }
 
   return (
-    <Card testID="metric-0">
-      <XStack gap="3" items="center">
-        <Text fontSize="3xl" aria-hidden>
-          👟
+    <YStack testID="metric-0" px={16} py={12} gap={12}>
+      <XStack gap={12} items="center">
+        <IconChip icon="shoe-print" color="catSteps" />
+        <Text flex={1} fontSize={17} color="ink">
+          {t('health.metrics.steps')}
         </Text>
-        <YStack flex={1}>
-          <FieldLabel>{t('health.metrics.steps')}</FieldLabel>
-          <Text fontSize="3xl" fontWeight="800" color="ink">
-            {healthToday.steps === null ? t('common.noValue') : formatNumber(healthToday.steps, language)}
-          </Text>
-        </YStack>
+        <Text fontSize={17} fontWeight="600" color="ink">
+          {healthToday.steps === null ? t('common.noValue') : formatNumber(healthToday.steps, language)}
+        </Text>
       </XStack>
 
       {manualEntry ? (
         <>
-          <XStack gap="2" flexWrap="wrap" items="center">
-            <YStack flex={1} minW={160}>
+          <XStack gap={8} flexWrap="wrap" items="center">
+            <YStack flex={1} minW={150}>
               <TextField
                 aria-label={t('health.metrics.steps')}
                 placeholder={t('health.stepsPlaceholder')}
@@ -105,29 +121,27 @@ function StepsCard({ healthToday, manualEntry }: { healthToday: HealthDay; manua
                 onSubmitEditing={handleSave}
               />
             </YStack>
-            <AppButton variant="soft" onPress={handleSave}>
+            <AppButton variant="soft" size="sm" onPress={handleSave}>
               {t('health.stepsSave')}
             </AppButton>
           </XStack>
           {error ? <ErrorMessage>{error}</ErrorMessage> : null}
-          <Text fontSize="sm" color="muted">
-            {t('health.stepsHint')}
-          </Text>
         </>
       ) : null}
-    </Card>
+    </YStack>
   );
 }
 
-type StepperCardProps = {
+type StepperRowProps = {
   testID: string;
   healthToday: HealthDay;
-  metric: Exclude<HealthMetric, 'steps'>;
-  emoji: string;
+  metric: StepperMetric;
+  icon: IconName;
+  color: PaletteColor;
   digits: number;
 };
 
-function StepperCard({ testID, healthToday, metric, emoji, digits }: StepperCardProps) {
+function StepperRow({ testID, healthToday, metric, icon, color, digits }: StepperRowProps) {
   const { t } = useTranslation();
   const language = useLanguage();
   const { today, actions } = useAppData();
@@ -140,26 +154,25 @@ function StepperCard({ testID, healthToday, metric, emoji, digits }: StepperCard
   }
 
   return (
-    <Card testID={testID} grow={1} shrink={1} flexBasis={180} p="4" gap="3">
-      <XStack gap="2" items="center">
-        <Text fontSize="xl" aria-hidden>
-          {emoji}
+    <Row testID={testID}>
+      <IconChip icon={icon} color={color} />
+      <Text flex={1} fontSize={17} color="ink">
+        {name}
+      </Text>
+      <XStack gap={4} items="baseline">
+        <Text fontSize={17} fontWeight="600" color="ink">
+          {value === null ? t('common.noValue') : formatDecimal(value, language, digits)}
         </Text>
-        <FieldLabel>{name}</FieldLabel>
+        <Text fontSize={13} color="muted">
+          {t(`health.units.${metric}`)}
+        </Text>
       </XStack>
-      <XStack items="center" justify="space-between" gap="2">
-        <IconButton icon="remove" label={t('health.decrease', { metric: name })} onPress={() => adjust(-1)} bg="cardAlt" color="ink" />
-        <YStack items="center">
-          <Text fontSize="2xl" fontWeight="800" color="ink">
-            {value === null ? t('common.noValue') : formatDecimal(value, language, digits)}
-          </Text>
-          <Text fontSize="xs" color="muted">
-            {t(`health.units.${metric}`)}
-          </Text>
-        </YStack>
-        <IconButton icon="add" label={t('health.increase', { metric: name })} onPress={() => adjust(1)} bg="brandSoft" color="brandInk" />
+      <XStack bg="cardAlt" rounded={10} items="center">
+        <IconButton icon="minus" label={t('health.decrease', { metric: name })} onPress={() => adjust(-1)} color="ink" />
+        <YStack w={1} h={20} bg="line" />
+        <IconButton icon="plus" label={t('health.increase', { metric: name })} onPress={() => adjust(1)} color="ink" />
       </XStack>
-    </Card>
+    </Row>
   );
 }
 
@@ -181,9 +194,9 @@ function AddHabitForm() {
   }
 
   return (
-    <YStack gap="2">
-      <XStack gap="2" flexWrap="wrap" items="center">
-        <YStack flex={1} minW={160}>
+    <YStack gap={10}>
+      <XStack gap={8} flexWrap="wrap" items="center">
+        <YStack flex={1} minW={150}>
           <TextField
             aria-label={t('habits.addLabel')}
             placeholder={t('habits.placeholder')}
@@ -192,7 +205,7 @@ function AddHabitForm() {
             onSubmitEditing={handleAdd}
           />
         </YStack>
-        <AppButton variant="soft" icon="add" onPress={handleAdd}>
+        <AppButton variant="soft" size="sm" icon="plus" onPress={handleAdd}>
           {t('common.add')}
         </AppButton>
       </XStack>

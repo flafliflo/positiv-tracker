@@ -5,10 +5,10 @@ import { Text, XStack, YStack } from 'tamagui';
 import { useAppData } from '@/app-data/app-data-provider';
 import { useDayLabel } from '@/i18n/use-day-label';
 import { EntryActions, LoadError } from '@/ui/entry-actions';
-import { Card, EmptyState, Screen, SectionTitle } from '@/ui/kit';
+import { Card, EmptyState, Group, IconChip, Screen, Section } from '@/ui/kit';
 
 import { sortNewestFirst, type Win } from '../domain/win';
-import { CATEGORY_EMOJI, WinForm } from './win-form';
+import { CATEGORY_ICON, WinForm } from './win-form';
 
 export function WinsScreen() {
   const { t } = useTranslation();
@@ -24,18 +24,17 @@ export function WinsScreen() {
       </Card>
 
       {status === 'ready' && wins.length === 0 ? (
-        <EmptyState emoji="🏆" title={t('wins.empty.title')} body={t('wins.empty.body')} />
+        <EmptyState icon="trophy-outline" title={t('wins.empty.title')} body={t('wins.empty.body')} />
       ) : null}
 
       {wins.length > 0 ? (
-        <YStack gap="3">
-          <SectionTitle>{t('wins.list.title')}</SectionTitle>
-          <YStack role="list" gap="3">
+        <Section title={t('wins.list.title')}>
+          <Group role="list">
             {wins.map((win) => (
               <WinItem key={win.id} win={win} />
             ))}
-          </YStack>
-        </YStack>
+          </Group>
+        </Section>
       ) : null}
     </Screen>
   );
@@ -48,7 +47,7 @@ function WinItem({ win }: { win: Win }) {
   const [editing, setEditing] = useState(false);
 
   return (
-    <Card role="listitem" testID={`win-item-${win.id}`} p="4" gap="3">
+    <YStack role="listitem" testID={`win-item-${win.id}`} px={16} py={12}>
       {editing ? (
         <WinForm
           initial={{ text: win.text, category: win.category }}
@@ -58,24 +57,20 @@ function WinItem({ win }: { win: Win }) {
           onCancel={() => setEditing(false)}
         />
       ) : (
-        <XStack gap="3" items="flex-start">
-          <YStack w={44} h={44} rounded="full" bg="accentSoft" items="center" justify="center">
-            <Text fontSize="xl" aria-hidden>
-              {CATEGORY_EMOJI[win.category]}
-            </Text>
-          </YStack>
-          <YStack flex={1} gap="1">
-            <Text fontSize="base" fontWeight="600" color="ink">
+        <XStack gap={12} items="center">
+          <IconChip icon={CATEGORY_ICON[win.category]} color="catWins" size={34} />
+          <YStack flex={1} gap={2}>
+            <Text fontSize={17} color="ink">
               {win.text}
             </Text>
-            <XStack gap="2" items="center" flexWrap="wrap">
-              <Text fontSize="sm" fontWeight="600" color="accentInk">
+            <XStack gap={6} items="center" flexWrap="wrap">
+              <Text fontSize={13} fontWeight="600" color="accentInk">
                 {t(`wins.categories.${win.category}`)}
               </Text>
-              <Text fontSize="sm" color="muted" aria-hidden>
+              <Text fontSize={13} color="muted" aria-hidden>
                 ·
               </Text>
-              <Text fontSize="sm" color="muted">
+              <Text fontSize={13} color="muted">
                 {dayLabel(win.day)}
               </Text>
             </XStack>
@@ -83,6 +78,6 @@ function WinItem({ win }: { win: Win }) {
           <EntryActions onEdit={() => setEditing(true)} onDelete={() => void actions.removeWin(win.id)} />
         </XStack>
       )}
-    </Card>
+    </YStack>
   );
 }

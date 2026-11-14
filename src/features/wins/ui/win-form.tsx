@@ -3,17 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { XStack, YStack } from 'tamagui';
 
 import type { ActionResult } from '@/app-data/app-data-provider';
-import { AppButton, Chip, ErrorMessage, FieldLabel, TextField } from '@/ui/kit';
+import { AppButton, Chip, ErrorMessage, FieldLabel, TextField, type IconName } from '@/ui/kit';
 
 import { MAX_WIN_TEXT_LENGTH, WIN_CATEGORIES, type WinCategory, type WinInput, type WinValidationError } from '../domain/win';
 
-export const CATEGORY_EMOJI: Record<WinCategory, string> = {
-  health: '💪',
-  work: '💼',
-  learning: '📚',
-  relationships: '🤝',
-  mindset: '🧠',
-  other: '✨',
+export const CATEGORY_ICON: Record<WinCategory, IconName> = {
+  health: 'arm-flex-outline',
+  work: 'briefcase-outline',
+  learning: 'school-outline',
+  relationships: 'account-heart-outline',
+  mindset: 'head-lightbulb-outline',
+  other: 'star-four-points-outline',
 };
 
 type Props = {
@@ -47,8 +47,8 @@ export function WinForm({ initial = EMPTY, submitLabel, onSubmit, onDone, onCanc
   }
 
   return (
-    <YStack gap="4">
-      <YStack gap="2">
+    <YStack gap={14}>
+      <YStack gap={6}>
         <FieldLabel>{t('wins.form.textLabel')}</FieldLabel>
         <TextField
           aria-label={t('wins.form.textLabel')}
@@ -59,11 +59,11 @@ export function WinForm({ initial = EMPTY, submitLabel, onSubmit, onDone, onCanc
         />
       </YStack>
 
-      <YStack gap="2">
+      <YStack gap={6}>
         <FieldLabel>{t('wins.form.categoryLabel')}</FieldLabel>
-        <XStack role="radiogroup" aria-label={t('wins.form.categoryLabel')} gap="2" flexWrap="wrap">
+        <XStack role="radiogroup" aria-label={t('wins.form.categoryLabel')} gap={8} flexWrap="wrap">
           {WIN_CATEGORIES.map((option) => (
-            <Chip key={option} emoji={CATEGORY_EMOJI[option]} selected={option === category} onPress={() => setCategory(option)}>
+            <Chip key={option} icon={CATEGORY_ICON[option]} selected={option === category} onPress={() => setCategory(option)}>
               {t(`wins.categories.${option}`)}
             </Chip>
           ))}
@@ -72,11 +72,9 @@ export function WinForm({ initial = EMPTY, submitLabel, onSubmit, onDone, onCanc
 
       {error ? <ErrorMessage>{error}</ErrorMessage> : null}
 
-      <XStack gap="2" flexWrap="wrap">
+      <XStack gap={8} flexWrap="wrap">
         <YStack flex={1} minW={180}>
-          <AppButton onPress={handleSubmit} icon="checkmark-circle">
-            {submitLabel}
-          </AppButton>
+          <AppButton onPress={handleSubmit}>{submitLabel}</AppButton>
         </YStack>
         {onCancel ? (
           <AppButton variant="ghost" onPress={onCancel}>

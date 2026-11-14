@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Text, XStack, YStack } from 'tamagui';
 
 import { useAppData } from '@/app-data/app-data-provider';
-import { AppButton, Card, ErrorMessage, IconButton, Screen, SectionTitle } from '@/ui/kit';
+import { AppButton, Card, ErrorMessage, Footnote, Icon, IconButton, Screen, Section } from '@/ui/kit';
 
 import { buildExportFile, saveExportFile, type ExportFile } from '../data/export-file';
 import { LanguageSwitcher } from './language-switcher';
@@ -45,57 +45,50 @@ export function SettingsScreen({ onBack, saveFile = saveExportFile }: Props) {
   return (
     <Screen
       title={t('settings.title')}
-      action={<IconButton icon="arrow-back" label={t('settings.back')} onPress={onBack} bg="card" color="ink" />}
+      action={<IconButton icon="arrow-left" label={t('settings.back')} onPress={onBack} bg="card" color="ink" />}
     >
-      <Card>
-        <SectionTitle>{t('settings.language')}</SectionTitle>
+      <Section title={t('settings.language')}>
         <LanguageSwitcher />
-      </Card>
+      </Section>
 
-      <Card>
-        <SectionTitle>{t('settings.data.title')}</SectionTitle>
-        <XStack gap="2" items="center">
-          <Text fontSize="xl" aria-hidden>
-            🔒
-          </Text>
-          <Text flex={1} color="muted">
-            {t('privacy.localOnly')}
-          </Text>
-        </XStack>
-
-        <AppButton variant="soft" icon="download-outline" onPress={handleExport}>
-          {t('settings.data.export')}
-        </AppButton>
-
-        {confirmingDelete ? (
-          <YStack gap="3" bg="dangerSoft" rounded="2xl" p="4">
-            <Text fontWeight="700" color="danger">
-              {t('settings.data.deleteQuestion')}
-            </Text>
-            <XStack gap="2" flexWrap="wrap">
-              <AppButton variant="danger" size="sm" onPress={handleDelete}>
-                {t('settings.data.deleteConfirm')}
-              </AppButton>
-              <AppButton variant="ghost" size="sm" onPress={() => setConfirmingDelete(false)}>
-                {t('common.cancel')}
-              </AppButton>
-            </XStack>
-          </YStack>
-        ) : (
-          <AppButton variant="danger" icon="trash-outline" onPress={() => setConfirmingDelete(true)}>
-            {t('settings.data.delete')}
+      <Section title={t('settings.data.title')}>
+        <Card>
+          <AppButton variant="soft" icon="tray-arrow-down" onPress={handleExport}>
+            {t('settings.data.export')}
           </AppButton>
-        )}
 
-        {notice ? (
-          <XStack role="status" aria-live="polite" gap="2" items="center" bg="brandSoft" rounded="lg" px="3" py="2">
-            <Text flex={1} color="brandInk" fontSize="sm" fontWeight="600">
-              {t(`settings.data.${notice}`)}
-            </Text>
-          </XStack>
-        ) : null}
-        {failed ? <ErrorMessage>{t('common.saveFailed')}</ErrorMessage> : null}
-      </Card>
+          {confirmingDelete ? (
+            <YStack gap={12}>
+              <Text fontSize={17} fontWeight="600" color="danger">
+                {t('settings.data.deleteQuestion')}
+              </Text>
+              <XStack gap={8} flexWrap="wrap">
+                <AppButton variant="danger" size="sm" onPress={handleDelete}>
+                  {t('settings.data.deleteConfirm')}
+                </AppButton>
+                <AppButton variant="ghost" size="sm" onPress={() => setConfirmingDelete(false)}>
+                  {t('common.cancel')}
+                </AppButton>
+              </XStack>
+            </YStack>
+          ) : (
+            <AppButton variant="danger" icon="trash-can-outline" onPress={() => setConfirmingDelete(true)}>
+              {t('settings.data.delete')}
+            </AppButton>
+          )}
+
+          {notice ? (
+            <XStack gap={6} items="center">
+              <Icon name="check-circle" size={18} color="brand" />
+              <Text role="status" aria-live="polite" flex={1} color="brandInk" fontSize={15} fontWeight="600">
+                {t(`settings.data.${notice}`)}
+              </Text>
+            </XStack>
+          ) : null}
+          {failed ? <ErrorMessage>{t('common.saveFailed')}</ErrorMessage> : null}
+        </Card>
+        <Footnote>{t('privacy.localOnly')}</Footnote>
+      </Section>
     </Screen>
   );
 }

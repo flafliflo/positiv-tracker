@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 
 import { createDeviceRepositories } from '@/app-data/repositories';
 import { setupAppI18n } from '@/i18n/setup-app-i18n';
+import { applyWebChrome } from '@/ui/web-chrome';
 
 /**
  * Composition Root: der einzige Ort, an dem die echten Abhängigkeiten gewählt werden.
@@ -18,6 +19,7 @@ export const repositories = createDeviceRepositories(AsyncStorage);
 
 // Im Web: <html lang="…"> aktuell halten, damit Screenreader die richtige Aussprache wählen.
 if (Platform.OS === 'web' && typeof document !== 'undefined') {
+  applyWebChrome(document);
   document.documentElement.lang = i18n.language;
   i18n.on('languageChanged', (language) => {
     document.documentElement.lang = language;

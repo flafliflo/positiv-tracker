@@ -1,29 +1,27 @@
 import { useTranslation } from 'react-i18next';
-import { XStack } from 'tamagui';
 
 import { SUPPORTED_LANGUAGES } from '@/i18n/languages';
 import { useLanguage } from '@/i18n/use-language';
-import { Chip } from '@/ui/kit';
+import { Segment, Segmented } from '@/ui/kit';
 
-/** Sprachwahl (DE / IT / EN) als Radiogruppe – für Screenreader voll beschriftet. */
+/** Sprachwahl (Deutsch / Italiano / English) als Umschaltleiste. */
 export function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
   const active = useLanguage();
 
   return (
-    <XStack role="radiogroup" aria-label={t('settings.language')} gap="2" flexWrap="wrap">
+    <Segmented label={t('settings.language')}>
       {SUPPORTED_LANGUAGES.map((language) => (
-        <Chip
+        <Segment
           key={language}
           selected={language === active}
-          label={t(`languages.${language}`)}
           onPress={() => {
             void i18n.changeLanguage(language);
           }}
         >
           {t(`languages.${language}`)}
-        </Chip>
+        </Segment>
       ))}
-    </XStack>
+    </Segmented>
   );
 }

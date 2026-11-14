@@ -46,3 +46,9 @@ export function formatDecimal(value: number, language: Language, digits: number)
 export function formatPercent(value: number, language: Language): string {
   return new Intl.NumberFormat(FORMAT_LOCALE[language], { style: 'percent', maximumFractionDigits: 0 }).format(value);
 }
+
+/** Kurzer Wochentag, z. B. Mo, Di (für die Wochenleiste). */
+export function formatWeekdayShort(isoDay: string, language: Language): string {
+  const weekday = new Intl.DateTimeFormat(FORMAT_LOCALE[language], { weekday: 'short' }).format(parseIsoDay(isoDay));
+  return weekday.endsWith('.') ? weekday.slice(0, -1) : weekday;
+}
