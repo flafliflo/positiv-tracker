@@ -1,11 +1,34 @@
+import { animationsCSS } from '@tamagui/config/animations-css';
 import { defaultConfig } from '@tamagui/config/v6';
 import { createTamagui } from 'tamagui';
 
+import { darkPalette, lightPalette } from './palette';
+
 /**
- * Design-Tokens (Farben, Abstände, Schriftgrössen) und Themes (light/dark).
- * Wir starten mit der Standard-Konfiguration v6 und passen sie später ans Branding an.
+ * Design-System: Tamagui-Standard (Abstände, Schriftgrössen, Radien) plus unsere
+ * eigene Farbpalette für Hell und Dunkel und ein Animations-Treiber.
  */
-export const tamaguiConfig = createTamagui(defaultConfig);
+export const tamaguiConfig = createTamagui({
+  ...defaultConfig,
+  animations: animationsCSS,
+  themes: {
+    ...defaultConfig.themes,
+    light: {
+      ...defaultConfig.themes.light,
+      ...lightPalette,
+      background: lightPalette.page,
+      color: lightPalette.ink,
+      'placeholder-color': lightPalette.muted,
+    },
+    dark: {
+      ...defaultConfig.themes.dark,
+      ...darkPalette,
+      background: darkPalette.page,
+      color: darkPalette.ink,
+      'placeholder-color': darkPalette.muted,
+    },
+  },
+});
 
 export type AppTamaguiConfig = typeof tamaguiConfig;
 
