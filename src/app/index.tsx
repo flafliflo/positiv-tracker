@@ -1,16 +1,10 @@
-import { Stack } from 'expo-router';
-import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 
-import { WinsScreen } from '@/features/wins/ui/wins-screen';
+import { TodayScreen } from '@/features/today/ui/today-screen';
 
 /** Route "/": Dateien in src/app sind nur dünne Hüllen, die Logik liegt in src/features. */
-export default function HomeRoute() {
-  const { t } = useTranslation();
+export default function TodayRoute() {
+  const router = useRouter();
 
-  return (
-    <>
-      <Stack.Screen options={{ title: t('app.name') }} />
-      <WinsScreen />
-    </>
-  );
+  return <TodayScreen onOpenSettings={() => router.push('/settings')} onOpenJournal={() => router.push('/journal')} />;
 }
