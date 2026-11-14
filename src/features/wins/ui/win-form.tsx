@@ -1,72 +1,89 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Text, XStack, YStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 
-import { MAX_WIN_TEXT_LENGTH, WIN_CATEGORIES, type WinCategory } from '../domain/win';
+import type { ActionResult } from '@/app-data/app-data-provider';
+import { AppButton, Chip, ErrorMessage, FieldLabel, TextField } from '@/ui/kit';
 
-export type WinFormError = 'textRequired' | 'textTooLong' | 'saveFailed' | 'loadFailed';
+import { MAX_WIN_TEXT_LENGTH, WIN_CATEGORIES, type WinCategory, type WinInput, type WinValidationError } from '../domain/win';
 
-type Props = {
-  text: string;
-  category: WinCategory;
-  error: WinFormError | null;
-  onTextChange: (text: string) => void;
-  onCategoryChange: (category: WinCategory) => void;
-  onSubmit: () => void;
+export const CATEGORY_EMOJI: Record<WinCategory, string> = {
+  health: '💪',
+  work: '💼',
+  learning: '📚',
+  relationships: '🤝',
+  mindset: '🧠',
+  other: '✨',
 };
 
-/** Reine Darstellung: Der Zustand lebt im WinsScreen, das Formular meldet nur Eingaben. */
-export function WinForm({ text, category, error, onTextChange, onCategoryChange, onSubmit }: Props) {
+type Props = {
+  initial?: WinInput;
+  submitLabel: string;
+  onSubmit: (input: WinInput) => Promise<ActionResult<WinValidationError>>;
+  /** Wird nach erfolgreichem Speichern aufgerufen (z. B. um den Bearbeiten-Modus zu schliessen). */
+  onDone?: () => void;
+  onCancel?: () => void;
+};
+
+const EMPTY: WinInput = { text: '', category: 'other' };
+
+/** Formular für einen Win – dient sowohl zum Erfassen als auch zum Bearbeiten. */
+export function WinForm({ initial = EMPTY, submitLabel, onSubmit, onDone, onCancel }: Props) {
   const { t } = useTranslation();
+  const [text, setText] = useState(initial.text);
+  const [category, setCategory] = useState<WinCategory>(initial.category);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit() {
+    const result = await onSubmit({ text, category });
+    if (!result.ok) {
+      const isValidation = result.error === 'textRequired' || result.error === 'textTooLong';
+      setError(t(isValidation ? `wins.errors.${result.error}` : `common.${result.error}`, { max: MAX_WIN_TEXT_LENGTH }));
+      return;
+    }
+    setError(null);
+    setText(EMPTY.text);
+    onDone?.();
+  }
 
   return (
-    <YStack gap="4" p="4" rounded="xl" bg="background" borderWidth={1} borderColor="border-color">
+    <YStack gap="4">
       <YStack gap="2">
-        <Text fontSize="sm" fontWeight="600" color="color-9">
-          {t('wins.form.textLabel')}
-        </Text>
-        <Input
+        <FieldLabel>{t('wins.form.textLabel')}</FieldLabel>
+        <TextField
           aria-label={t('wins.form.textLabel')}
           placeholder={t('wins.form.placeholder')}
           value={text}
-          onChange={(event) => onTextChange(event.target.value)}
-          onSubmitEditing={onSubmit}
-          size="lg"
+          onChange={(event) => setText(event.target.value)}
+          onSubmitEditing={handleSubmit}
         />
       </YStack>
 
       <YStack gap="2">
-        <Text fontSize="sm" fontWeight="600" color="color-9">
-          {t('wins.form.categoryLabel')}
-        </Text>
+        <FieldLabel>{t('wins.form.categoryLabel')}</FieldLabel>
         <XStack role="radiogroup" aria-label={t('wins.form.categoryLabel')} gap="2" flexWrap="wrap">
-          {WIN_CATEGORIES.map((option) => {
-            const selected = option === category;
-            return (
-              <Button
-                key={option}
-                role="radio"
-                aria-checked={selected}
-                size="sm"
-                rounded="full"
-                theme={selected ? 'accent' : undefined}
-                onPress={() => onCategoryChange(option)}
-              >
-                {t(`wins.categories.${option}`)}
-              </Button>
-            );
-          })}
+          {WIN_CATEGORIES.map((option) => (
+            <Chip key={option} emoji={CATEGORY_EMOJI[option]} selected={option === category} onPress={() => setCategory(option)}>
+              {t(`wins.categories.${option}`)}
+            </Chip>
+          ))}
         </XStack>
       </YStack>
 
-      {error ? (
-        <Text role="alert" aria-live="polite" color="red-600" fontSize="sm">
-          {t(`wins.errors.${error}`, { max: MAX_WIN_TEXT_LENGTH })}
-        </Text>
-      ) : null}
+      {error ? <ErrorMessage>{error}</ErrorMessage> : null}
 
-      <Button theme="accent" size="lg" onPress={onSubmit}>
-        {t('wins.form.submit')}
-      </Button>
+      <XStack gap="2" flexWrap="wrap">
+        <YStack flex={1} minW={180}>
+          <AppButton onPress={handleSubmit} icon="checkmark-circle">
+            {submitLabel}
+          </AppButton>
+        </YStack>
+        {onCancel ? (
+          <AppButton variant="ghost" onPress={onCancel}>
+            {t('common.cancel')}
+          </AppButton>
+        ) : null}
+      </XStack>
     </YStack>
   );
 }

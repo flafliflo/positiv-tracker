@@ -1,95 +1,88 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { H1, ScrollView, Text, XStack, YStack } from 'tamagui';
+import { Text, XStack, YStack } from 'tamagui';
 
-import { LanguageSwitcher } from '@/features/settings/ui/language-switcher';
+import { useAppData } from '@/app-data/app-data-provider';
+import { useDayLabel } from '@/i18n/use-day-label';
+import { EntryActions, LoadError } from '@/ui/entry-actions';
+import { Card, EmptyState, Screen, SectionTitle } from '@/ui/kit';
 
-import { useWinRepository } from '../data/win-repository-context';
-import { createWin, type Win, type WinCategory } from '../domain/win';
-import { generateWinId } from '../domain/generate-win-id';
-import { WinForm, type WinFormError } from './win-form';
-import { WinList } from './win-list';
+import { sortNewestFirst, type Win } from '../domain/win';
+import { CATEGORY_EMOJI, WinForm } from './win-form';
 
-type Props = {
-  /** Uhr und ID-Erzeugung sind austauschbar, damit Tests feste Werte nutzen können. */
-  now?: () => Date;
-  generateId?: () => string;
-};
-
-const currentDate = () => new Date();
-
-export function WinsScreen({ now = currentDate, generateId = generateWinId }: Props) {
+export function WinsScreen() {
   const { t } = useTranslation();
-  const repository = useWinRepository();
-
-  const [wins, setWins] = useState<Win[] | null>(null); // null = wird noch geladen
-  const [text, setText] = useState('');
-  const [category, setCategory] = useState<WinCategory>('other');
-  const [error, setError] = useState<WinFormError | null>(null);
-
-  useEffect(() => {
-    let active = true;
-    repository
-      .list()
-      .then((loaded) => {
-        if (active) setWins(loaded);
-      })
-      .catch(() => {
-        if (!active) return;
-        setWins([]);
-        setError('loadFailed');
-      });
-    return () => {
-      active = false;
-    };
-  }, [repository]);
-
-  async function handleSubmit() {
-    const result = createWin({ text, category }, { now, generateId });
-    if (!result.ok) {
-      setError(result.error);
-      return;
-    }
-    try {
-      await repository.add(result.win);
-      setWins(await repository.list());
-      setText('');
-      setError(null);
-    } catch {
-      setError('saveFailed');
-    }
-  }
+  const { status, data, actions } = useAppData();
+  const wins = sortNewestFirst(data.wins);
 
   return (
-    <ScrollView flex={1} bg="color-2" keyboardShouldPersistTaps="handled">
-      <YStack w="100%" maxW={640} self="center" gap="6" px="4" py="8">
-        <XStack justify="space-between" items="flex-start" gap="4">
-          <YStack flex={1} gap="1">
-            <H1 fontSize="3xl" fontWeight="700">
-              {t('wins.title')}
-            </H1>
-            <Text fontSize="lg" color="color-9">
-              {t('wins.subtitle')}
+    <Screen title={t('wins.title')} subtitle={t('wins.subtitle')}>
+      <LoadError />
+
+      <Card>
+        <WinForm submitLabel={t('wins.form.submit')} onSubmit={actions.addWin} />
+      </Card>
+
+      {status === 'ready' && wins.length === 0 ? (
+        <EmptyState emoji="🏆" title={t('wins.empty.title')} body={t('wins.empty.body')} />
+      ) : null}
+
+      {wins.length > 0 ? (
+        <YStack gap="3">
+          <SectionTitle>{t('wins.list.title')}</SectionTitle>
+          <YStack role="list" gap="3">
+            {wins.map((win) => (
+              <WinItem key={win.id} win={win} />
+            ))}
+          </YStack>
+        </YStack>
+      ) : null}
+    </Screen>
+  );
+}
+
+function WinItem({ win }: { win: Win }) {
+  const { t } = useTranslation();
+  const { actions } = useAppData();
+  const dayLabel = useDayLabel();
+  const [editing, setEditing] = useState(false);
+
+  return (
+    <Card role="listitem" testID={`win-item-${win.id}`} p="4" gap="3">
+      {editing ? (
+        <WinForm
+          initial={{ text: win.text, category: win.category }}
+          submitLabel={t('wins.form.update')}
+          onSubmit={(input) => actions.updateWin(win.id, input)}
+          onDone={() => setEditing(false)}
+          onCancel={() => setEditing(false)}
+        />
+      ) : (
+        <XStack gap="3" items="flex-start">
+          <YStack w={44} h={44} rounded="full" bg="accentSoft" items="center" justify="center">
+            <Text fontSize="xl" aria-hidden>
+              {CATEGORY_EMOJI[win.category]}
             </Text>
           </YStack>
-          <LanguageSwitcher />
+          <YStack flex={1} gap="1">
+            <Text fontSize="base" fontWeight="600" color="ink">
+              {win.text}
+            </Text>
+            <XStack gap="2" items="center" flexWrap="wrap">
+              <Text fontSize="sm" fontWeight="600" color="accentInk">
+                {t(`wins.categories.${win.category}`)}
+              </Text>
+              <Text fontSize="sm" color="muted" aria-hidden>
+                ·
+              </Text>
+              <Text fontSize="sm" color="muted">
+                {dayLabel(win.day)}
+              </Text>
+            </XStack>
+          </YStack>
+          <EntryActions onEdit={() => setEditing(true)} onDelete={() => void actions.removeWin(win.id)} />
         </XStack>
-
-        <WinForm
-          text={text}
-          category={category}
-          error={error}
-          onTextChange={setText}
-          onCategoryChange={setCategory}
-          onSubmit={handleSubmit}
-        />
-
-        {wins ? <WinList wins={wins} /> : null}
-
-        <Text fontSize="xs" color="color-9" text="center">
-          {t('privacy.localOnly')}
-        </Text>
-      </YStack>
-    </ScrollView>
+      )}
+    </Card>
   );
 }
