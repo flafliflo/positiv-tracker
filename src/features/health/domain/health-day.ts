@@ -37,6 +37,22 @@ export function setHealthMetric(healthDay: HealthDay, metric: HealthMetric, valu
   return { ...healthDay, [metric]: Math.min(max, Math.max(min, rounded)) };
 }
 
+/** Startwert beim ersten Plus und Schrittweite der Plus/Minus-Knöpfe. */
+const ADJUSTMENT: Record<HealthMetric, { start: number; step: number }> = {
+  steps: { start: 1000, step: 500 },
+  sleepHours: { start: 7, step: 0.5 },
+  waterGlasses: { start: 1, step: 1 },
+  trainingMinutes: { start: 15, step: 5 },
+};
+
+/** Plus/Minus-Knopf: erhöht oder verringert einen Messwert um einen sinnvollen Schritt. */
+export function adjustHealthMetric(healthDay: HealthDay, metric: HealthMetric, direction: 1 | -1): HealthDay {
+  const current = healthDay[metric];
+  const { start, step } = ADJUSTMENT[metric];
+  if (current === null) return direction === 1 ? setHealthMetric(healthDay, metric, start) : healthDay;
+  return setHealthMetric(healthDay, metric, current + direction * step);
+}
+
 /**
  * Liest eine Zahl aus einer Nutzereingabe: "8'000", "10 000" und "7,5" funktionieren alle.
  * Gibt `null` zurück, wenn die Eingabe leer, negativ oder keine Zahl ist.

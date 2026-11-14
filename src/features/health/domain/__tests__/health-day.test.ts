@@ -1,4 +1,4 @@
-import { emptyHealthDay, hasHealthData, parseMetricInput, setHealthMetric } from '../health-day';
+import { adjustHealthMetric, emptyHealthDay, hasHealthData, parseMetricInput, setHealthMetric } from '../health-day';
 
 describe('health day', () => {
   const empty = emptyHealthDay('2026-11-15');
@@ -58,5 +58,27 @@ describe('parseMetricInput', () => {
     expect(parseMetricInput('  ')).toBeNull();
     expect(parseMetricInput('abc')).toBeNull();
     expect(parseMetricInput('-3')).toBeNull();
+  });
+});
+
+describe('adjustHealthMetric (plus/minus buttons)', () => {
+  const empty = emptyHealthDay('2026-11-15');
+
+  it('starts from a sensible value on the first plus', () => {
+    expect(adjustHealthMetric(empty, 'sleepHours', 1).sleepHours).toBe(7);
+    expect(adjustHealthMetric(empty, 'waterGlasses', 1).waterGlasses).toBe(1);
+    expect(adjustHealthMetric(empty, 'trainingMinutes', 1).trainingMinutes).toBe(15);
+  });
+
+  it('then moves in steps: half hours, single glasses, 5 minutes', () => {
+    expect(adjustHealthMetric({ ...empty, sleepHours: 7 }, 'sleepHours', 1).sleepHours).toBe(7.5);
+    expect(adjustHealthMetric({ ...empty, sleepHours: 7 }, 'sleepHours', -1).sleepHours).toBe(6.5);
+    expect(adjustHealthMetric({ ...empty, waterGlasses: 3 }, 'waterGlasses', -1).waterGlasses).toBe(2);
+    expect(adjustHealthMetric({ ...empty, trainingMinutes: 15 }, 'trainingMinutes', 1).trainingMinutes).toBe(20);
+  });
+
+  it('never goes below zero and ignores minus on an empty value', () => {
+    expect(adjustHealthMetric({ ...empty, waterGlasses: 0 }, 'waterGlasses', -1).waterGlasses).toBe(0);
+    expect(adjustHealthMetric(empty, 'waterGlasses', -1).waterGlasses).toBeNull();
   });
 });
