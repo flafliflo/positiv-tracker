@@ -1,0 +1,47 @@
+{
+  "app": {
+    "name": "Positiv-Tracker"
+  },
+  "wins": {
+    "title": "My wins",
+    "subtitle": "What went well today?",
+    "form": {
+      "textLabel": "Your win",
+      "placeholder": "e.g. went for a 20-minute walk",
+      "categoryLabel": "Category",
+      "submit": "Save win"
+    },
+    "errors": {
+      "textRequired": "Write down briefly what went well.",
+      "textTooLong": "Please use at most {{max}} characters.",
+      "saveFailed": "The win could not be saved. Please try again.",
+      "loadFailed": "Your wins could not be loaded."
+    },
+    "list": {
+      "title": "Earlier wins"
+    },
+    "empty": {
+      "title": "No wins yet",
+      "body": "Capture your first win – small ones count too."
+    },
+    "categories": {
+      "health": "Health",
+      "work": "Work",
+      "learning": "Learning",
+      "relationships": "Relationships",
+      "mindset": "Mindset",
+      "other": "Other"
+    }
+  },
+  "settings": {
+    "language": "Language"
+  },
+  "languages": {
+    "de": "Deutsch",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "privacy": {
+    "localOnly": "Your entries stay stored on this device."
+  }
+}

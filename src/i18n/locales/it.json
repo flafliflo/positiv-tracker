@@ -1,0 +1,47 @@
+{
+  "app": {
+    "name": "Positiv-Tracker"
+  },
+  "wins": {
+    "title": "I miei successi",
+    "subtitle": "Cosa ti è riuscito oggi?",
+    "form": {
+      "textLabel": "Il tuo successo",
+      "placeholder": "es. 20 minuti di passeggiata",
+      "categoryLabel": "Categoria",
+      "submit": "Salva successo"
+    },
+    "errors": {
+      "textRequired": "Scrivi brevemente cosa ti è riuscito.",
+      "textTooLong": "Al massimo {{max}} caratteri.",
+      "saveFailed": "Non è stato possibile salvare il successo. Riprova.",
+      "loadFailed": "Non è stato possibile caricare i tuoi successi."
+    },
+    "list": {
+      "title": "Successi precedenti"
+    },
+    "empty": {
+      "title": "Ancora nessun successo",
+      "body": "Annota il tuo primo successo: contano anche quelli piccoli."
+    },
+    "categories": {
+      "health": "Salute",
+      "work": "Lavoro",
+      "learning": "Apprendimento",
+      "relationships": "Relazioni",
+      "mindset": "Mentalità",
+      "other": "Altro"
+    }
+  },
+  "settings": {
+    "language": "Lingua"
+  },
+  "languages": {
+    "de": "Deutsch",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "privacy": {
+    "localOnly": "Le tue annotazioni restano salvate su questo dispositivo."
+  }
+}

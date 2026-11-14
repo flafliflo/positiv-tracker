@@ -1,0 +1,47 @@
+{
+  "app": {
+    "name": "Positiv-Tracker"
+  },
+  "wins": {
+    "title": "Meine Wins",
+    "subtitle": "Was ist dir heute gelungen?",
+    "form": {
+      "textLabel": "Dein Win",
+      "placeholder": "z. B. 20 Minuten spazieren gegangen",
+      "categoryLabel": "Kategorie",
+      "submit": "Win speichern"
+    },
+    "errors": {
+      "textRequired": "Schreib kurz auf, was dir gelungen ist.",
+      "textTooLong": "Bitte höchstens {{max}} Zeichen.",
+      "saveFailed": "Der Win konnte nicht gespeichert werden. Versuch es noch einmal.",
+      "loadFailed": "Deine Wins konnten nicht geladen werden."
+    },
+    "list": {
+      "title": "Bisherige Wins"
+    },
+    "empty": {
+      "title": "Noch keine Wins",
+      "body": "Halte deinen ersten Erfolg fest – auch kleine zählen."
+    },
+    "categories": {
+      "health": "Gesundheit",
+      "work": "Arbeit",
+      "learning": "Lernen",
+      "relationships": "Beziehungen",
+      "mindset": "Mindset",
+      "other": "Sonstiges"
+    }
+  },
+  "settings": {
+    "language": "Sprache"
+  },
+  "languages": {
+    "de": "Deutsch",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "privacy": {
+    "localOnly": "Deine Einträge bleiben auf diesem Gerät gespeichert."
+  }
+}
