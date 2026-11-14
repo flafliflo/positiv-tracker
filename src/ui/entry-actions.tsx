@@ -23,8 +23,8 @@ export function EntryActions({ onEdit, onDelete, deleteLabel }: Props) {
 
   if (confirming) {
     return (
-      <XStack gap="2" items="center" flexWrap="wrap" justify="flex-end">
-        <Text fontSize="sm" fontWeight="600" color="ink">
+      <XStack gap={8} items="center" flexWrap="wrap" justify="flex-end">
+        <Text fontSize={15} fontWeight="600" color="ink">
           {t('common.confirmDelete')}
         </Text>
         <AppButton size="sm" variant="danger" onPress={onDelete}>
@@ -38,9 +38,9 @@ export function EntryActions({ onEdit, onDelete, deleteLabel }: Props) {
   }
 
   return (
-    <XStack gap="1">
-      {onEdit ? <IconButton icon="create-outline" label={t('common.edit')} onPress={onEdit} /> : null}
-      <IconButton icon="trash-outline" label={deleteLabel ?? t('common.delete')} onPress={() => setConfirming(true)} />
+    <XStack>
+      {onEdit ? <IconButton icon="pencil-outline" label={t('common.edit')} onPress={onEdit} /> : null}
+      <IconButton icon="trash-can-outline" label={deleteLabel ?? t('common.delete')} onPress={() => setConfirming(true)} />
     </XStack>
   );
 }

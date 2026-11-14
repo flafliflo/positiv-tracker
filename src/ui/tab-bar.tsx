@@ -9,27 +9,14 @@ type TabBarProps = TabListProps & {
   label: string;
 };
 
-/** Schwebende Tab-Leiste am unteren Rand (auf allen Plattformen gleich). */
+/** Klassische Tab-Leiste am unteren Rand: volle Breite, feine Linie oben. */
 export function TabBar({ children, label, ...props }: TabBarProps) {
   return (
-    <View
-      {...props}
-      role="navigation"
-      aria-label={label}
-      style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: 12, flexDirection: 'row', justifyContent: 'center' }}
-    >
-      <XStack
-        flex={1}
-        maxW={520}
-        bg="card"
-        rounded="3xl"
-        p="1.5"
-        gap="1"
-        borderWidth={1}
-        borderColor="line"
-        boxShadow="0 10px 30px var(--shade)"
-      >
-        {children}
+    <View {...props} role="navigation" aria-label={label} style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+      <XStack bg="card" borderTopWidth={1} borderColor="line" justify="center" px={8} pt={6} pb={8}>
+        <XStack flex={1} maxW={640}>
+          {children}
+        </XStack>
       </XStack>
     </View>
   );
@@ -39,11 +26,13 @@ type TabButtonProps = TabTriggerSlotProps & { icon: IconName; label: string };
 
 /** Ein Tab: im Web ein echter Link (<a href>), der aktive ist für Screenreader markiert. */
 export function TabButton({ icon, label, isFocused, ...props }: TabButtonProps) {
+  const color = isFocused ? 'brand' : 'muted';
+
   return (
     <Pressable {...(props as PressableProps)} aria-current={isFocused ? 'page' : undefined} style={{ flex: 1 }}>
-      <YStack items="center" justify="center" gap="0.5" py="2" rounded="2xl" bg={isFocused ? 'brandSoft' : 'transparent'} transition="quick">
-        <Icon name={icon} size={22} color={isFocused ? 'brandInk' : 'muted'} />
-        <Text fontSize="xs" fontWeight={isFocused ? '700' : '600'} color={isFocused ? 'brandInk' : 'muted'} numberOfLines={1}>
+      <YStack items="center" justify="center" gap={2} py={4}>
+        <Icon name={icon} size={26} color={color} />
+        <Text fontSize={11} fontWeight="600" color={color} numberOfLines={1}>
           {label}
         </Text>
       </YStack>

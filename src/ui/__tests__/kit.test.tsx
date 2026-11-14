@@ -53,7 +53,7 @@ describe('UI kit', () => {
   it('IconButton is named by its label', async () => {
     const onPress = jest.fn();
     const user = userEvent.setup();
-    await renderWithProviders(<IconButton icon="trash-outline" label="Löschen" onPress={onPress} />);
+    await renderWithProviders(<IconButton icon="trash-can-outline" label="Löschen" onPress={onPress} />);
 
     await user.press(screen.getByRole('button', { name: 'Löschen' }));
 
