@@ -2,20 +2,77 @@
   "app": {
     "name": "Positiv-Tracker"
   },
+  "common": {
+    "add": "Aggiungi",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "confirmDelete": "Eliminare davvero?",
+    "today": "Oggi",
+    "yesterday": "Ieri",
+    "noValue": "–",
+    "saveFailed": "Non è stato possibile salvare. Riprova.",
+    "loadFailed": "Non è stato possibile caricare i tuoi dati.",
+    "notFound": "Questa voce non esiste più."
+  },
+  "tabs": {
+    "label": "Navigazione principale",
+    "today": "Oggi",
+    "wins": "Successi",
+    "journal": "Pensieri",
+    "health": "Salute",
+    "progress": "Progressi"
+  },
+  "today": {
+    "greeting": {
+      "morning": "Buongiorno",
+      "day": "Ciao",
+      "evening": "Buonasera"
+    },
+    "streak_one": "{{count}} giorno di fila",
+    "streak_other": "{{count}} giorni di fila",
+    "streakNone": "Inizia oggi la tua serie",
+    "streakHint": "Ogni annotazione conta, anche piccola.",
+    "tiles": {
+      "wins": "Successi di oggi",
+      "mood": "Umore",
+      "habits": "Abitudini",
+      "steps": "Passi"
+    },
+    "quickWin": {
+      "title": "Cosa ti è riuscito oggi?",
+      "label": "Successo veloce",
+      "placeholder": "es. Alzato presto"
+    },
+    "prompt": {
+      "title": "Spunto del giorno",
+      "action": "Scrivi i tuoi pensieri",
+      "items": {
+        "1": "Per cosa sei grato oggi?",
+        "2": "Quale momento ti ha fatto sorridere oggi?",
+        "3": "Cosa hai imparato oggi?",
+        "4": "A chi potresti dire grazie oggi?",
+        "5": "Di cosa sei fiero questa settimana?",
+        "6": "Cosa ti ha dato energia oggi?",
+        "7": "Cosa vorresti rifare domani?"
+      }
+    },
+    "habitsTitle": "Fatto oggi?"
+  },
   "wins": {
-    "title": "I miei successi",
-    "subtitle": "Cosa ti è riuscito oggi?",
+    "title": "Successi",
+    "subtitle": "Cosa ti è riuscito?",
     "form": {
       "textLabel": "Il tuo successo",
       "placeholder": "es. 20 minuti di passeggiata",
       "categoryLabel": "Categoria",
-      "submit": "Salva successo"
+      "submit": "Salva successo",
+      "update": "Salva modifica"
     },
     "errors": {
       "textRequired": "Scrivi brevemente cosa ti è riuscito.",
-      "textTooLong": "Al massimo {{max}} caratteri.",
-      "saveFailed": "Non è stato possibile salvare il successo. Riprova.",
-      "loadFailed": "Non è stato possibile caricare i tuoi successi."
+      "textTooLong": "Al massimo {{max}} caratteri."
     },
     "list": {
       "title": "Successi precedenti"
@@ -33,8 +90,133 @@
       "other": "Altro"
     }
   },
+  "journal": {
+    "title": "Pensieri",
+    "subtitle": "Come stai?",
+    "form": {
+      "moodLabel": "Umore",
+      "textLabel": "I tuoi pensieri",
+      "placeholder": "Cosa ti passa per la testa?",
+      "submit": "Salva annotazione",
+      "update": "Salva modifica"
+    },
+    "moods": {
+      "1": "Molto male",
+      "2": "Male",
+      "3": "Così così",
+      "4": "Bene",
+      "5": "Molto bene"
+    },
+    "errors": {
+      "moodRequired": "Scegli prima il tuo umore.",
+      "textTooLong": "Al massimo {{max}} caratteri."
+    },
+    "list": {
+      "title": "Annotazioni precedenti"
+    },
+    "empty": {
+      "title": "Ancora nessuna annotazione",
+      "body": "Basta una frase. O solo il tuo umore."
+    }
+  },
+  "health": {
+    "title": "Salute",
+    "subtitle": "I tuoi valori di oggi",
+    "metrics": {
+      "steps": "Passi",
+      "sleepHours": "Sonno",
+      "waterGlasses": "Acqua",
+      "trainingMinutes": "Allenamento"
+    },
+    "units": {
+      "steps": "passi",
+      "sleepHours": "ore",
+      "waterGlasses": "bicchieri",
+      "trainingMinutes": "min"
+    },
+    "increase": "Aumenta {{metric}}",
+    "decrease": "Riduci {{metric}}",
+    "stepsPlaceholder": "es. 8'000",
+    "stepsSave": "Salva passi",
+    "stepsHint": "Nel browser inserisci i passi a mano. Nell'app per smartphone arriveranno in automatico da Apple Health o Health Connect.",
+    "stepsInvalid": "Inserisci un numero, ad es. 8000."
+  },
+  "habits": {
+    "title": "Abitudini",
+    "addLabel": "Nuova abitudine",
+    "placeholder": "es. 10 minuti di lettura",
+    "done": "{{name}} fatto",
+    "streak": "Serie di {{name}}: {{count}} giorni",
+    "remove": "Elimina {{name}}",
+    "errors": {
+      "nameRequired": "Dai un nome all'abitudine.",
+      "nameTooLong": "Al massimo {{max}} caratteri."
+    },
+    "empty": {
+      "title": "Ancora nessuna abitudine",
+      "body": "Creane una e spuntala ogni giorno."
+    }
+  },
+  "progress": {
+    "title": "Progressi",
+    "subtitle": "Il tuo riepilogo",
+    "streak": {
+      "current": "Serie attuale",
+      "best": "Serie più lunga",
+      "days_one": "{{count}} giorno",
+      "days_other": "{{count}} giorni"
+    },
+    "heatmap": {
+      "title": "Attività delle ultime settimane",
+      "less": "Meno",
+      "more": "Più",
+      "cell_one": "{{date}}: {{count}} annotazione",
+      "cell_other": "{{date}}: {{count}} annotazioni"
+    },
+    "period": {
+      "label": "Periodo",
+      "week": "7 giorni",
+      "month": "30 giorni"
+    },
+    "summary": {
+      "title": "Riepilogo",
+      "wins": "Successi",
+      "journal": "Annotazioni",
+      "mood": "Ø Umore",
+      "steps": "Ø Passi",
+      "sleep": "Ø Sonno",
+      "water": "Ø Acqua",
+      "training": "Allenamento",
+      "habits": "Abitudini",
+      "activeDays": "Giorni attivi"
+    },
+    "moodTrend": {
+      "title": "Andamento dell'umore",
+      "empty": "Ancora nessun umore registrato.",
+      "bar": "{{date}}: umore {{mood}} su 5"
+    },
+    "insight": {
+      "title": "Correlazione",
+      "better": "Nei giorni con {{steps}}+ passi il tuo umore è migliore del {{percent}} %.",
+      "worse": "Nei giorni con {{steps}}+ passi il tuo umore è peggiore del {{percent}} %.",
+      "same": "Nei giorni con {{steps}}+ passi il tuo umore è uguale agli altri giorni.",
+      "notEnough": "Registra passi e umore per alcuni giorni: qui vedrai come il movimento influisce sul tuo umore."
+    }
+  },
   "settings": {
-    "language": "Lingua"
+    "title": "Impostazioni",
+    "open": "Apri impostazioni",
+    "back": "Indietro",
+    "language": "Lingua",
+    "data": {
+      "title": "I tuoi dati",
+      "export": "Esporta dati (JSON)",
+      "exported": "Esportazione creata.",
+      "delete": "Elimina tutti i dati",
+      "deleteQuestion": "Eliminare davvero tutti i dati? L'operazione non può essere annullata.",
+      "deleteConfirm": "Sì, elimina tutto",
+      "deleted": "Tutti i dati sono stati eliminati."
+    }
   },
   "languages": {
     "de": "Deutsch",

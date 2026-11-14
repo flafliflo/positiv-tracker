@@ -2,20 +2,77 @@
   "app": {
     "name": "Positiv-Tracker"
   },
+  "common": {
+    "add": "Add",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Really delete?",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "noValue": "–",
+    "saveFailed": "This could not be saved. Please try again.",
+    "loadFailed": "Your data could not be loaded.",
+    "notFound": "This entry no longer exists."
+  },
+  "tabs": {
+    "label": "Main navigation",
+    "today": "Today",
+    "wins": "Wins",
+    "journal": "Thoughts",
+    "health": "Health",
+    "progress": "Progress"
+  },
+  "today": {
+    "greeting": {
+      "morning": "Good morning",
+      "day": "Hello",
+      "evening": "Good evening"
+    },
+    "streak_one": "{{count}} day in a row",
+    "streak_other": "{{count}} days in a row",
+    "streakNone": "Start your streak today",
+    "streakHint": "Every entry counts – even a small one.",
+    "tiles": {
+      "wins": "Wins today",
+      "mood": "Mood",
+      "habits": "Habits",
+      "steps": "Steps"
+    },
+    "quickWin": {
+      "title": "What went well today?",
+      "label": "Quick win",
+      "placeholder": "e.g. Got up early"
+    },
+    "prompt": {
+      "title": "Prompt of the day",
+      "action": "Write down your thoughts",
+      "items": {
+        "1": "What are you grateful for today?",
+        "2": "Which moment made you smile today?",
+        "3": "What did you learn today?",
+        "4": "Who could you thank today?",
+        "5": "What are you proud of this week?",
+        "6": "What gave you energy today?",
+        "7": "What would you like to do again tomorrow?"
+      }
+    },
+    "habitsTitle": "Done today?"
+  },
   "wins": {
-    "title": "My wins",
-    "subtitle": "What went well today?",
+    "title": "Wins",
+    "subtitle": "What went well?",
     "form": {
       "textLabel": "Your win",
       "placeholder": "e.g. went for a 20-minute walk",
       "categoryLabel": "Category",
-      "submit": "Save win"
+      "submit": "Save win",
+      "update": "Save change"
     },
     "errors": {
       "textRequired": "Write down briefly what went well.",
-      "textTooLong": "Please use at most {{max}} characters.",
-      "saveFailed": "The win could not be saved. Please try again.",
-      "loadFailed": "Your wins could not be loaded."
+      "textTooLong": "Please use at most {{max}} characters."
     },
     "list": {
       "title": "Earlier wins"
@@ -33,8 +90,133 @@
       "other": "Other"
     }
   },
+  "journal": {
+    "title": "Thoughts",
+    "subtitle": "How are you feeling?",
+    "form": {
+      "moodLabel": "Mood",
+      "textLabel": "Your thoughts",
+      "placeholder": "What is on your mind?",
+      "submit": "Save entry",
+      "update": "Save change"
+    },
+    "moods": {
+      "1": "Very bad",
+      "2": "Bad",
+      "3": "Okay",
+      "4": "Good",
+      "5": "Very good"
+    },
+    "errors": {
+      "moodRequired": "Choose your mood first.",
+      "textTooLong": "Please use at most {{max}} characters."
+    },
+    "list": {
+      "title": "Earlier entries"
+    },
+    "empty": {
+      "title": "No entries yet",
+      "body": "One sentence is enough. Or just your mood."
+    }
+  },
+  "health": {
+    "title": "Health",
+    "subtitle": "Your numbers for today",
+    "metrics": {
+      "steps": "Steps",
+      "sleepHours": "Sleep",
+      "waterGlasses": "Water",
+      "trainingMinutes": "Training"
+    },
+    "units": {
+      "steps": "steps",
+      "sleepHours": "hrs",
+      "waterGlasses": "glasses",
+      "trainingMinutes": "min"
+    },
+    "increase": "Increase {{metric}}",
+    "decrease": "Decrease {{metric}}",
+    "stepsPlaceholder": "e.g. 8,000",
+    "stepsSave": "Save steps",
+    "stepsHint": "In the browser you enter steps by hand. In the phone app they will come automatically from Apple Health or Health Connect.",
+    "stepsInvalid": "Please enter a number, e.g. 8000."
+  },
+  "habits": {
+    "title": "Habits",
+    "addLabel": "New habit",
+    "placeholder": "e.g. read for 10 minutes",
+    "done": "{{name}} done",
+    "streak": "Streak of {{name}}: {{count}} days",
+    "remove": "Delete {{name}}",
+    "errors": {
+      "nameRequired": "Give the habit a name.",
+      "nameTooLong": "Please use at most {{max}} characters."
+    },
+    "empty": {
+      "title": "No habits yet",
+      "body": "Create one and tick it off every day."
+    }
+  },
+  "progress": {
+    "title": "Progress",
+    "subtitle": "Your review",
+    "streak": {
+      "current": "Current streak",
+      "best": "Longest streak",
+      "days_one": "{{count}} day",
+      "days_other": "{{count}} days"
+    },
+    "heatmap": {
+      "title": "Activity in recent weeks",
+      "less": "Less",
+      "more": "More",
+      "cell_one": "{{date}}: {{count}} entry",
+      "cell_other": "{{date}}: {{count}} entries"
+    },
+    "period": {
+      "label": "Period",
+      "week": "7 days",
+      "month": "30 days"
+    },
+    "summary": {
+      "title": "Review",
+      "wins": "Wins",
+      "journal": "Entries",
+      "mood": "Avg. mood",
+      "steps": "Avg. steps",
+      "sleep": "Avg. sleep",
+      "water": "Avg. water",
+      "training": "Training",
+      "habits": "Habits",
+      "activeDays": "Active days"
+    },
+    "moodTrend": {
+      "title": "Mood trend",
+      "empty": "No mood recorded yet.",
+      "bar": "{{date}}: mood {{mood}} out of 5"
+    },
+    "insight": {
+      "title": "Connection",
+      "better": "On days with {{steps}}+ steps your mood is {{percent}}% better.",
+      "worse": "On days with {{steps}}+ steps your mood is {{percent}}% worse.",
+      "same": "On days with {{steps}}+ steps your mood is the same as on other days.",
+      "notEnough": "Record steps and mood on a few days – then you will see here how movement affects your mood."
+    }
+  },
   "settings": {
-    "language": "Language"
+    "title": "Settings",
+    "open": "Open settings",
+    "back": "Back",
+    "language": "Language",
+    "data": {
+      "title": "Your data",
+      "export": "Export data (JSON)",
+      "exported": "Export created.",
+      "delete": "Delete all data",
+      "deleteQuestion": "Really delete all data? This cannot be undone.",
+      "deleteConfirm": "Yes, delete everything",
+      "deleted": "All data has been deleted."
+    }
   },
   "languages": {
     "de": "Deutsch",

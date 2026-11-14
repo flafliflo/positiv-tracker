@@ -1,4 +1,4 @@
-import { formatDay, formatNumber } from '../format';
+import { formatDay, formatDecimal, formatNumber, formatShortDay, formatWeekdayDate } from '../format';
 
 describe('formatDay', () => {
   it('formats a calendar day the German way', () => {
@@ -27,5 +27,28 @@ describe('formatNumber', () => {
 
   it('uses comma grouping for English', () => {
     expect(formatNumber(10000, 'en')).toBe('10,000');
+  });
+});
+
+describe('formatWeekdayDate', () => {
+  it('names weekday, day and month in each language', () => {
+    expect(formatWeekdayDate('2026-11-15', 'de')).toMatch(/Sonntag.*15.*November/);
+    expect(formatWeekdayDate('2026-11-15', 'it')).toMatch(/domenica.*15.*novembre/i);
+    expect(formatWeekdayDate('2026-11-15', 'en')).toMatch(/Sunday.*15.*November/);
+  });
+});
+
+describe('formatShortDay', () => {
+  it('is a compact day and month', () => {
+    expect(formatShortDay('2026-11-05', 'de')).toMatch(/^5. Nov/);
+    expect(formatShortDay('2026-11-05', 'en')).toMatch(/^5 Nov/);
+  });
+});
+
+describe('formatDecimal', () => {
+  it('rounds to the given number of digits', () => {
+    expect(formatDecimal(3.456, 'en', 1)).toBe('3.5');
+    expect(formatDecimal(7, 'en', 1)).toBe('7.0');
+    expect(formatDecimal(7.5, 'de', 1)).toMatch(/^7[.,]5$/);
   });
 });

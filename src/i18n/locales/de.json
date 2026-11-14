@@ -2,20 +2,77 @@
   "app": {
     "name": "Positiv-Tracker"
   },
+  "common": {
+    "add": "Hinzufügen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "confirmDelete": "Wirklich löschen?",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "noValue": "–",
+    "saveFailed": "Das konnte nicht gespeichert werden. Versuch es noch einmal.",
+    "loadFailed": "Deine Daten konnten nicht geladen werden.",
+    "notFound": "Dieser Eintrag existiert nicht mehr."
+  },
+  "tabs": {
+    "label": "Hauptnavigation",
+    "today": "Heute",
+    "wins": "Wins",
+    "journal": "Gedanken",
+    "health": "Gesundheit",
+    "progress": "Fortschritt"
+  },
+  "today": {
+    "greeting": {
+      "morning": "Guten Morgen",
+      "day": "Hallo",
+      "evening": "Guten Abend"
+    },
+    "streak_one": "{{count}} Tag in Folge",
+    "streak_other": "{{count}} Tage in Folge",
+    "streakNone": "Starte heute deine Serie",
+    "streakHint": "Jeder Eintrag zählt – auch ein kleiner.",
+    "tiles": {
+      "wins": "Wins heute",
+      "mood": "Stimmung",
+      "habits": "Gewohnheiten",
+      "steps": "Schritte"
+    },
+    "quickWin": {
+      "title": "Was ist dir heute gelungen?",
+      "label": "Schneller Win",
+      "placeholder": "z. B. Früh aufgestanden"
+    },
+    "prompt": {
+      "title": "Impuls des Tages",
+      "action": "Gedanken aufschreiben",
+      "items": {
+        "1": "Wofür bist du heute dankbar?",
+        "2": "Welcher Moment hat dich heute zum Lächeln gebracht?",
+        "3": "Was hast du heute gelernt?",
+        "4": "Wem könntest du heute Danke sagen?",
+        "5": "Worauf bist du diese Woche stolz?",
+        "6": "Was hat dir heute Energie gegeben?",
+        "7": "Was möchtest du morgen wieder so machen?"
+      }
+    },
+    "habitsTitle": "Heute erledigt?"
+  },
   "wins": {
-    "title": "Meine Wins",
-    "subtitle": "Was ist dir heute gelungen?",
+    "title": "Wins",
+    "subtitle": "Was ist dir gelungen?",
     "form": {
       "textLabel": "Dein Win",
       "placeholder": "z. B. 20 Minuten spazieren gegangen",
       "categoryLabel": "Kategorie",
-      "submit": "Win speichern"
+      "submit": "Win speichern",
+      "update": "Änderung speichern"
     },
     "errors": {
       "textRequired": "Schreib kurz auf, was dir gelungen ist.",
-      "textTooLong": "Bitte höchstens {{max}} Zeichen.",
-      "saveFailed": "Der Win konnte nicht gespeichert werden. Versuch es noch einmal.",
-      "loadFailed": "Deine Wins konnten nicht geladen werden."
+      "textTooLong": "Bitte höchstens {{max}} Zeichen."
     },
     "list": {
       "title": "Bisherige Wins"
@@ -33,8 +90,133 @@
       "other": "Sonstiges"
     }
   },
+  "journal": {
+    "title": "Gedanken",
+    "subtitle": "Wie geht es dir?",
+    "form": {
+      "moodLabel": "Stimmung",
+      "textLabel": "Deine Gedanken",
+      "placeholder": "Was beschäftigt dich gerade?",
+      "submit": "Eintrag speichern",
+      "update": "Änderung speichern"
+    },
+    "moods": {
+      "1": "Sehr schlecht",
+      "2": "Schlecht",
+      "3": "Okay",
+      "4": "Gut",
+      "5": "Sehr gut"
+    },
+    "errors": {
+      "moodRequired": "Wähle zuerst deine Stimmung.",
+      "textTooLong": "Bitte höchstens {{max}} Zeichen."
+    },
+    "list": {
+      "title": "Bisherige Einträge"
+    },
+    "empty": {
+      "title": "Noch keine Einträge",
+      "body": "Ein Satz genügt. Oder nur deine Stimmung."
+    }
+  },
+  "health": {
+    "title": "Gesundheit",
+    "subtitle": "Deine Werte für heute",
+    "metrics": {
+      "steps": "Schritte",
+      "sleepHours": "Schlaf",
+      "waterGlasses": "Wasser",
+      "trainingMinutes": "Training"
+    },
+    "units": {
+      "steps": "Schritte",
+      "sleepHours": "Std.",
+      "waterGlasses": "Gläser",
+      "trainingMinutes": "Min."
+    },
+    "increase": "{{metric}} erhöhen",
+    "decrease": "{{metric}} verringern",
+    "stepsPlaceholder": "z. B. 8'000",
+    "stepsSave": "Schritte speichern",
+    "stepsHint": "Im Browser erfasst du Schritte von Hand. In der Handy-App kommen sie später automatisch aus Apple Health oder Health Connect.",
+    "stepsInvalid": "Bitte eine Zahl eingeben, z. B. 8000."
+  },
+  "habits": {
+    "title": "Gewohnheiten",
+    "addLabel": "Neue Gewohnheit",
+    "placeholder": "z. B. 10 Minuten lesen",
+    "done": "{{name}} erledigt",
+    "streak": "Serie von {{name}}: {{count}} Tage",
+    "remove": "{{name}} löschen",
+    "errors": {
+      "nameRequired": "Gib der Gewohnheit einen Namen.",
+      "nameTooLong": "Bitte höchstens {{max}} Zeichen."
+    },
+    "empty": {
+      "title": "Noch keine Gewohnheiten",
+      "body": "Lege eine an und hake sie jeden Tag ab."
+    }
+  },
+  "progress": {
+    "title": "Fortschritt",
+    "subtitle": "Dein Rückblick",
+    "streak": {
+      "current": "Aktuelle Serie",
+      "best": "Längste Serie",
+      "days_one": "{{count}} Tag",
+      "days_other": "{{count}} Tage"
+    },
+    "heatmap": {
+      "title": "Aktivität der letzten Wochen",
+      "less": "Weniger",
+      "more": "Mehr",
+      "cell_one": "{{date}}: {{count}} Eintrag",
+      "cell_other": "{{date}}: {{count}} Einträge"
+    },
+    "period": {
+      "label": "Zeitraum",
+      "week": "7 Tage",
+      "month": "30 Tage"
+    },
+    "summary": {
+      "title": "Rückblick",
+      "wins": "Wins",
+      "journal": "Einträge",
+      "mood": "Ø Stimmung",
+      "steps": "Ø Schritte",
+      "sleep": "Ø Schlaf",
+      "water": "Ø Wasser",
+      "training": "Training",
+      "habits": "Gewohnheiten",
+      "activeDays": "Aktive Tage"
+    },
+    "moodTrend": {
+      "title": "Stimmungsverlauf",
+      "empty": "Noch keine Stimmung erfasst.",
+      "bar": "{{date}}: Stimmung {{mood}} von 5"
+    },
+    "insight": {
+      "title": "Zusammenhang",
+      "better": "An Tagen mit {{steps}}+ Schritten ist deine Stimmung {{percent}} % besser.",
+      "worse": "An Tagen mit {{steps}}+ Schritten ist deine Stimmung {{percent}} % schlechter.",
+      "same": "Deine Stimmung ist an Tagen mit {{steps}}+ Schritten gleich wie sonst.",
+      "notEnough": "Erfasse an einigen Tagen Schritte und Stimmung – dann siehst du hier, wie Bewegung deine Stimmung beeinflusst."
+    }
+  },
   "settings": {
-    "language": "Sprache"
+    "title": "Einstellungen",
+    "open": "Einstellungen öffnen",
+    "back": "Zurück",
+    "language": "Sprache",
+    "data": {
+      "title": "Deine Daten",
+      "export": "Daten exportieren (JSON)",
+      "exported": "Export erstellt.",
+      "delete": "Alle Daten löschen",
+      "deleteQuestion": "Wirklich alle Daten löschen? Das lässt sich nicht rückgängig machen.",
+      "deleteConfirm": "Ja, alles löschen",
+      "deleted": "Alle Daten wurden gelöscht."
+    }
   },
   "languages": {
     "de": "Deutsch",
