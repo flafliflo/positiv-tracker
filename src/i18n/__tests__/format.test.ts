@@ -20,8 +20,9 @@ describe('formatDay', () => {
 
 describe('formatNumber', () => {
   it('uses Swiss grouping for German and Italian', () => {
-    expect(formatNumber(10000, 'de')).toBe('10’000');
-    expect(formatNumber(10000, 'it')).toBe('10’000');
+    // Je nach Unicode-Daten der Plattform ist das Trennzeichen ' (gerade) oder ’ (typografisch).
+    expect(formatNumber(10000, 'de')).toMatch(/^10['’]000$/);
+    expect(formatNumber(10000, 'it')).toMatch(/^10['’]000$/);
   });
 
   it('uses comma grouping for English', () => {
