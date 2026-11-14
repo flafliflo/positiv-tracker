@@ -1,42 +1,53 @@
-# ADR 0007: Eigenes Design-System auf Tamagui
+# ADR 0007: Eigenes Design-System auf Tamagui, im klassischen App-Stil
 
-- Status: akzeptiert
+- Status: akzeptiert (Richtung von Flavio gewählt)
 - Datum: 2026-11-15
 
 ## Kontext
 
-Die erste Version nutzte die Standard-Komponenten und -Farben von Tamagui. Das Ergebnis
-wirkte generisch (graue Flächen, blasse Buttons) und passte nicht zu einer positiven,
-hochwertigen App.
+Die erste Version nutzte die Standard-Komponenten von Tamagui und wirkte generisch.
+Eine zweite Version mit Emojis, Kachel-Raster und schwebender Tab-Leiste wirkte wie
+„von KI gebaut". Für das Redesign wurde der Design-Skill „impeccable"
+(github.com/pbakaus/impeccable) geprüft, installiert und angewendet.
+
+## Zur Wahl standen
+
+1. Wegweiser (Signalgelb/Schwarz wie Schweizer Wanderwegweiser)
+2. Abreisskalender (Weiss/Schwarz/Rot, grosse Datumszahl)
+3. Stempelkarte (Tannengrün, Stempel pro aktivem Tag)
+4. **Klassisch wie bekannte Apps** ← gewählt
 
 ## Entscheid
 
-Tamagui bleibt die technische Basis (Layout, Themes, Tokens, Animationen). Darauf liegt
-eine kleine eigene Schicht:
+Der vertraute Standard etablierter Apps (Apple Health, Streaks, Day One), sauber umgesetzt.
+Tamagui bleibt die technische Basis; darauf liegt eine eigene Schicht:
 
-- `src/ui/palette.ts`: eigene Farbpalette für Hell und Dunkel
-  (warmes Papierweiss, Smaragdgrün als Markenfarbe, Bernstein für Wins/Streaks,
-  eigene Farbstufen für Stimmung und Heatmap).
-- `src/ui/kit.tsx`: eigene Bausteine (Screen, Card, AppButton, Chip, IconButton, TextField,
-  StatTile, ErrorMessage, EmptyState) – Screens verwenden nur diese.
-- `src/ui/tab-bar.tsx`: schwebende Tab-Leiste, im Web echte Links.
-- Icons: Ionicons (`@expo/vector-icons`); Emojis für Kategorien, Stimmung und Kennzahlen.
-- Schrift: System-Schrift des Geräts (San Francisco, Roboto, Segoe UI) mit kräftigen Titeln.
-- Animationen: Tamagui-CSS-Treiber (`transition="quick"`, Druck- und Hover-Zustände).
+- `src/ui/palette.ts`: neutrale System-Flächen, Grün als Akzent, feste Farbe pro Bereich.
+- `src/ui/kit.tsx`: Bausteine (Screen, Section, Group/Row/ValueRow, Card, AppButton, Chip,
+  Segmented, IconButton, IconChip, TextField, ErrorMessage, EmptyState).
+- `src/ui/tab-bar.tsx`: klassische Tab-Leiste über die volle Breite, im Web echte Links.
+- `src/ui/web-chrome.ts`: Textauswahl, Schreibmarke und Scrollbalken in App-Farben.
+- Icons: eine Familie (Material Community Icons). Keine Emojis.
+- Schrift: System-Schrift des Geräts mit klaren Stufen (34 / 20 / 17 / 15 / 13 / 11).
+
+Details stehen in `DESIGN.md`, der Produktkontext in `PRODUCT.md`.
 
 ## Begründung
 
-- Ein Ort für Farben und Bausteine: Änderungen am Aussehen betreffen eine Datei, nicht jeden Screen.
-- Eigene Buttons statt der Tamagui-Skins, weil deren Akzentfarben im hellen Modus zu wenig
-  Kontrast hatten. Die eigenen sind im Web echte `<button>`-Elemente mit festem Namen.
-- System-Schrift statt Web-Font: keine Ladezeit, kein Abruf bei Dritten (Datenschutz),
-  sieht auf jedem Gerät „zu Hause" aus.
-- Emojis brauchen keine zusätzliche Bibliothek und funktionieren auf allen Plattformen.
+- Vertraute Muster brauchen keine Erklärung: gruppierte Listen, Umschaltleisten und eine
+  Tab-Leiste kennt jede Person vom eigenen Handy.
+- Gruppierte Listen statt Kachel-Raster: mehr Information pro Bildschirm, ruhiger, besser lesbar.
+- Eine Icon-Familie statt Emojis: einheitliche Strichstärke, auf jedem Gerät gleich.
+- Feste Bereichsfarben erfüllen eine Aufgabe: Man erkennt Schlaf, Wasser oder Wins ohne zu lesen.
+- System-Schrift: keine Ladezeit, kein Abruf bei Dritten (Datenschutz), passt zum klassischen Stil.
 
 ## Konsequenzen
 
-- Emojis sehen je nach Betriebssystem leicht anders aus.
+- Die App ist weniger eigenständig als mit einem eigenen Bildthema – bewusst so gewählt.
+- Vom Skill wurden nur die Anleitungen (Markdown) installiert. Sein Startskript lädt ein
+  Programm aus dem Netz nach und wurde weggelassen; die automatische Richtungs-Auswahl und der
+  eingebaute Slop-Detektor liefen deshalb nicht. Geprüft wurde stattdessen von Hand mit
+  Screenshots und dem axe-Test.
 - Der CSS-Animationstreiber ist fürs Web gedacht; für die nativen Apps (Phase 2) muss ein
   nativer Treiber (Reanimated) konfiguriert und geprüft werden.
-- Kontrast wird automatisch geprüft: Der axe-E2E-Test läuft über alle Seiten in Hell und Dunkel.
-  Nach Design-Änderungen zusätzlich `node scripts/screenshots.mjs` ausführen und ansehen.
+- Nach Design-Änderungen `node scripts/screenshots.mjs` ausführen und hell + dunkel ansehen.

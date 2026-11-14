@@ -17,7 +17,7 @@ versionierten Doku nachschlagen, `npx expo install` für Expo-Pakete verwenden).
 | UI | Tamagui v3 mit Config v6 (`src/ui/tamagui.config.ts`) |
 | i18n | i18next + react-i18next, Gerätesprache via expo-localization |
 | Speicher | Lokal auf dem Gerät (AsyncStorage / localStorage) hinter dem Port `Collection<T>` |
-| Icons | Ionicons aus `@expo/vector-icons`, Emojis für Kategorien und Stimmung |
+| Icons | Material Community Icons aus `@expo/vector-icons` (eine Familie, keine Emojis) |
 | Tests | Jest 30 + jest-expo + React Native Testing Library 14, Playwright + axe (E2E) |
 | CI/Hosting | GitHub Actions → GitHub Pages (https://flafliflo.github.io/positiv-tracker/) |
 
@@ -88,7 +88,8 @@ docs/research/         Recherche (Feature-Ideen)
   `opacity="hover:0.9 press:0.8"`, `outlineWidth="focus-visible:3px"`, `cursor="web:pointer"`.
   Input mit `onChange={(e) => e.target.value}`. Kein numerisches `lineHeight` (wäre ein Multiplikator).
 - **Design:** Farben nur über die Namen aus `src/ui/palette.ts`, Bausteine aus `src/ui/kit.tsx`
-  (Screen, Card, AppButton, Chip, IconButton, TextField, StatTile, ErrorMessage, EmptyState).
+  (Screen, Section, Group/Row/ValueRow, Card, AppButton, Chip, Segmented, IconButton, TextField,
+  ErrorMessage, EmptyState). Stil und Regeln stehen in `DESIGN.md`, der Produktkontext in `PRODUCT.md`.
   Nach Design-Änderungen `node scripts/screenshots.mjs` laufen lassen und hell + dunkel ansehen.
 - **Klickbares** braucht einen festen Namen (`aria-label`), sonst lesen Screenreader Icons/Emojis mit vor.
   `role="alert"` gehört auf ein Text-Element (nativ sind nur Texte/Buttons „accessible").
