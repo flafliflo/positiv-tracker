@@ -8,7 +8,7 @@ import { LanguageSwitcher } from '../language-switcher';
 
 function Title() {
   const { t } = useTranslation();
-  return <Text>{t('wins.title')}</Text>;
+  return <Text>{t('journal.title')}</Text>;
 }
 
 describe('LanguageSwitcher', () => {
@@ -30,11 +30,11 @@ describe('LanguageSwitcher', () => {
       </>,
       { language: 'de' },
     );
-    expect(screen.getByText('Meine Wins')).toBeOnTheScreen();
+    expect(screen.getByText('Gedanken')).toBeOnTheScreen();
 
     await user.press(screen.getByRole('radio', { name: 'Italiano' }));
 
-    expect(await screen.findByText('I miei successi')).toBeOnTheScreen();
+    expect(await screen.findByText('Pensieri')).toBeOnTheScreen();
     expect(screen.getByRole('radio', { name: 'Italiano' })).toBeChecked();
     expect(screen.getByLabelText('Lingua')).toBeOnTheScreen();
   });
